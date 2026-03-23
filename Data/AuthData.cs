@@ -16,7 +16,7 @@ public class AuthData
 
     public bool LoginAuth(UserLogin user)
     {
-        string getHashQuery = "SELECT password FROM dbo.users WHERE user_id=@user_id";
+        string getHashQuery = "SELECT password FROM users WHERE user_id=@user_id";
         string? storedHash = null;
 
         try
@@ -56,6 +56,66 @@ public class AuthData
         catch (Exception ex)
         {
             _logger.LogError($"❌ Ocurrió un error inesperado en AuthData.cs -> LoginAuth(). Error: ${ex}");
+            throw;
+        }
+    }
+
+    public LoggedInUser GetUserData(string username)
+    {
+        LoggedInUser user = new LoggedInUser();
+        string getUserQuery = @"
+            SELECT
+                u.user_id AS user_id,
+                u.username AS username,
+                u.name AS name,
+                u.middlename AS middlename,
+                u.pat_surname AS pat_surname,
+                u.mat_surname AS mat_surname,
+                u.email AS email,
+                u.is_active AS is_active,
+                alc.accessLevel AS accessLevel
+            FROM
+                users AS u
+            INNER JOIN
+                access_level_cat AS alc ON u.fk_accessLevel_id = alc.accessLevel_id
+            WHERE
+                u.username = @username
+                AND u.is_active <> 'borrado';
+        ";
+
+        try
+        {
+            using (MySqlConnection userConn = new MySqlConnection(_connectionString))
+            {
+                userConn.Open();
+
+                using (MySqlCommand userCmd = new MySqlCommand(getUserQuery, userConn))
+                {
+                    userCmd.Parameters.AddWithValue("@username", username);
+
+                    using (MySqlDataReader userReader = userCmd.ExecuteReader())
+                    {
+                        if (userReader.Read())
+                        {
+                            user.User_id = userReader.GetInt32("user_id");
+                            user.Username = userReader.GetString("username");
+                            user.Middlename = userReader.GetString("middlename");
+                            user.Pat_surname = userReader.GetString("pat_surname");
+                            user.Mat_surname = userReader.GetString("mat_surname");
+                            user.Email = userReader.GetString("email");
+                            user.Is_active = userReader.GetString("is_active");
+                            user.AccessLevel = userReader.GetString("accessLevel");
+                        }
+
+                        return user;
+                    }
+                }
+            }
+        }
+
+        catch (Exception ex)
+        {
+            _logger.LogError($"❌ Ocurrió un error inesperado al intentar obtener la información del usuario loggeado. AuthData.cs -> GetUserData() .Error: {ex.Message}.");
             throw;
         }
     }

@@ -28,7 +28,7 @@ namespace Models
         public string? Pat_surname { get; set; }
         public string? Mat_surname { get; set; }
         public string? Email { get; set; }
-        public bool Is_active { get; set; }
+        public string? Is_active { get; set; }
         public int Created_by { get; set; }
         public DateTime Created_at { get; set; }
         public int Updated_by { get; set; }
@@ -45,7 +45,7 @@ namespace Models
         public string? Password { get; set; } = string.Empty;
     }
 
-    public class UserLogon
+    public class LoggedInUser
     {
         public int User_id { get; set; }
         public string? Username { get; set; }
@@ -54,7 +54,7 @@ namespace Models
         public string? Pat_surname { get; set; }
         public string? Mat_surname { get; set; }
         public string? Email { get; set; }
-        public bool Is_active { get; set; }
+        public string? Is_active { get; set; }
         public string? AccessLevel { get; set; } // Se pasa a string para comparar por texto "administrador", "usuario" y no por int (id).
     }
 
@@ -87,7 +87,8 @@ namespace Models
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "El estado del usuario es un campo obligatorio.")]
-        public bool Is_active { get; set; }
+        [MaxLength(16, ErrorMessage = "El estado del usuario no puede exceder los 16 caracteres.")]
+        public string? Is_active { get; set; }
 
         [Required(ErrorMessage = "\"Creado por\" es un campo obligatorio.")]
         public int Created_by { get; set; }
@@ -124,7 +125,8 @@ namespace Models
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "El estado del usuario es un campo obligatorio.")]
-        public bool Is_active { get; set; }
+        [MaxLength(16, ErrorMessage = "El estado del usuario no puede exceder los 16 caracteres.")]
+        public string? Is_active { get; set; }
 
         [Required(ErrorMessage = "\"Actualizado por\" es un campo obligatorio.")]
         public int Updated_by { get; set; }

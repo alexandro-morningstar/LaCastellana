@@ -22,12 +22,10 @@ namespace La_Castellana.Controllers.API
             _authData=authData;
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] UserLogin user) 
         {
-            // CONTINUAR AQUI
-            //return StatusCode(StatusCodes.Status200OK, new { success=true, message="Esto es temporal", data="" });
             try
             {
                 // --------- Inicio de Sesión.
@@ -44,8 +42,8 @@ namespace La_Castellana.Controllers.API
                     return StatusCode(StatusCodes.Status401Unauthorized, new{ success=false, message="Credenciales incorrectas, inténtalo de nuevo." });
                 }
 
-                LoggedInUser userData = _authData.GetUserData(user.Username); // Inicio de sesión exitoso, obtener info del usuario.
-                if (userData.User_id == null)
+                LoggedInUser userData = _authData.GetUserData(user.Username!); // Inicio de sesión exitoso, obtener info del usuario.
+                if (userData.Username == null)
                 {
                     _logger.LogWarning($"⚠️ Algo salió mal, la solicitud para obtener los datos del usuario se completó, pero esta no devolvió información. Modelo vacío.");
                     return StatusCode(StatusCodes.Status204NoContent, new{ success=false, message="La solicitud se completó pero el servidor no devolvió información del usuario solicitado, inténtalo de nuevo o contacta con el administrador de la aplicación." });
@@ -56,7 +54,7 @@ namespace La_Castellana.Controllers.API
                 {
                     new Claim(ClaimTypes.NameIdentifier, userData.User_id.ToString()),
                     new Claim(ClaimTypes.Name, $"{userData.Name} {userData.Pat_surname}"),
-                    new Claim(ClaimTypes.Role, userData.AccessLevel)
+                    new Claim(ClaimTypes.Role, userData.AccessLevel!)
                 };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);

@@ -1,10 +1,10 @@
 using Models;
+using System.Timers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Timers;
 
 namespace La_Castellana.Controllers;
 
@@ -26,8 +26,9 @@ public class HomeController : Controller
             _ => null
         };
 
-        // return View("Login");
-        return RedirectToAction("ErrorHandler", new{ statusCode=404 });
+        return View("Login");
+        //return RedirectToAction("SignIn", "Users");
+        //return RedirectToAction("ErrorHandler", new{ statusCode=404 });
     }
 
     public IActionResult Privacy()

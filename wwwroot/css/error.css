@@ -5,6 +5,7 @@
 
 * {
     font-family: "Share Tech Mono";
+    box-sizing: border-box; /* Mejora el manejo de tamaños con padding/border */
 }
 
 html {
@@ -13,12 +14,52 @@ html {
 }
 
 body {
-    height: 99%;
-    width: 99%;
+    height: 100%;
+    width: 100%;
+    margin: 0; /* Asegura que ocupe todo el espacio */
+    padding: 0;
     background-color: #0001AB;
     display: flex;
     align-items: center;
+    position: relative;
+    overflow: hidden; /* Evita barras de desplazamiento por las animaciones */
 }
+
+/* --- Efectos de Fondo y Pantalla (Estatica y Ruido) --- */
+
+/* 1. Líneas horizontales (Scanlines) y tinte de color */
+body::before {
+    content: " ";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%; /* Tamaño de las líneas */
+    z-index: 100; /* Por encima de todo */
+    pointer-events: none; /* Permite clics en elementos inferiores */
+}
+
+/* 2. Animación de "Grano" de película (Usando tu imagen local) */
+body::after {
+    content: " ";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    /* RUTA CORREGIDA: Apunta a tu carpeta local images */
+    background: transparent url('../img/noise_transparent.png') repeat; 
+    opacity: 0.08;
+    animation: noise-animation .2s infinite;
+    z-index: 101; /* Ligeramente por encima de las líneas */
+    pointer-events: none;
+}
+
+/* --- Contenedor Principal --- */
 
 main {
     display: flex;
@@ -27,7 +68,10 @@ main {
     width: 70%;
     margin: auto;
     color: white;
+    z-index: 1; /* Asegura que esté por encima del fondo azul pero bajo los efectos */
 }
+
+/* --- Título del Error y Efecto Glitch --- */
 
 #error_type {
     font-size: 48px;
@@ -38,7 +82,30 @@ main {
     background: white;
     color: #0001AB;
     margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
 }
+
+/* Duplicado del texto con sombras para el efecto glitch */
+#error_type::before {
+    content: attr(data-text); /* IMPORTANTE: Requiere data-text en el HTML */
+    position: absolute;
+    top: 0;
+    left: -2px;
+    text-shadow: 2px 0 red;
+    background: white; /* Mismo fondo que el original */
+    color: #0001AB;
+    width: 100%;
+    height: 100%;
+    align-content: center; /* Centrado vertical */
+    
+    /* Versión moderna de clip (usando porcentajes para adaptabilidad) */
+    clip-path: polygon(0 44%, 100% 44%, 100% 56%, 0 56%);
+    
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+/* --- Resto de Elementos de Texto --- */
 
 #error_advertisement {
     font-size: 36px;
@@ -46,12 +113,6 @@ main {
     width: 90%;
     align-content: center;
     margin-bottom: 15px;
-}
-
-#error_message {
-    height: 60%;
-    display: flex;
-    align-items: center;
 }
 
 #reason_banner {
@@ -80,39 +141,7 @@ a {
     color: white;
 }
 
-/* Efecto de Estática y Ruido */
-body::before {
-    content: " ";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: 
-        /* Líneas horizontales (Scanlines) */
-        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-    background-size: 100% 3px, 3px 100%; /* Tamaño de las líneas */
-    z-index: 100; /* Por encima de todo */
-    pointer-events: none; /* Para que puedas hacer clic en los links de abajo */
-}
-
-/* Animación de "Grano" de película */
-body::after {
-    content: " ";
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    /* Generamos un ruido aleatorio con un gradiente radial repetitivo muy pequeño */
-    background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat; 
-    /* Nota: Si no quieres depender de una imagen, un filtro de contraste fuerte sirve */
-    opacity: 0.08;
-    animation: noise-animation .2s infinite;
-    z-index: 101;
-    pointer-events: none;
-}
+/* --- Animaciones (Keyframes) --- */
 
 @keyframes noise-animation {
     0% { transform: translate(0,0) }
@@ -128,31 +157,12 @@ body::after {
     100% { transform: translate(5%,0) }
 }
 
-#error_type {
-    /* ... tus estilos actuales ... */
-    position: relative;
-    overflow: hidden;
-}
-
-/* El truco del glitch es duplicar el texto con sombras de colores */
-#error_type::before {
-    content: attr(data-text); /* Necesitaremos agregar este atributo en el HTML */
-    position: absolute;
-    top: 0;
-    left: -2px;
-    text-shadow: 2px 0 red;
-    background: white; /* Mismo fondo que el original */
-    color: #0001AB;
-    width: 100%;
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim 5s infinite linear alternate-reverse;
-}
-
+/* Animación Glitch Actualizada con clip-path (polygon) */
 @keyframes glitch-anim {
-  0% { clip: rect(31px, 9999px, 94px, 0); }
-  20% { clip: rect(62px, 9999px, 42px, 0); }
-  40% { clip: rect(16px, 9999px, 78px, 0); }
-  60% { clip: rect(87px, 9999px, 12px, 0); }
-  80% { clip: rect(5px, 9999px, 61px, 0); }
-  100% { clip: rect(98px, 9999px, 25px, 0); }
+    0% { clip-path: polygon(0 31%, 100% 31%, 100% 94%, 0 94%); }
+    20% { clip-path: polygon(0 62%, 100% 62%, 100% 42%, 0 42%); }
+    40% { clip-path: polygon(0 16%, 100% 16%, 100% 78%, 0 78%); }
+    60% { clip-path: polygon(0 87%, 100% 87%, 100% 12%, 0 12%); }
+    80% { clip-path: polygon(0 5%, 100% 5%, 100% 61%, 0 61%); }
+    100% { clip-path: polygon(0 98%, 100% 98%, 100% 25%, 0 25%); }
 }

@@ -2,29 +2,29 @@
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/error.css">
-    <script src="https://kit.fontawesome.com/af56365703.js" crossorigin="anonymous"></script>
-    <link rel="icon" href="~/error.ico">
-    <title>@ViewBag.info["tabInfo"]</title>
-</head>
-<body>
-    <main>
-        <div id="error_type">@ViewBag.info["tabInfo"]</div>
-        <div id="error_advertisement">¡Ooppsss! Ocurrió un error.</div>
-        <p id="reason_banner">Estas pueden ser algunas razones:</p>
-        <div id="reasons_container">
-            <p class="reason"><i class="fa-solid fa-bugs"></i>&emsp;El final de los tiempos ha llegado y los servidores han muerto.</p>
-            <p class="reason"><i class="fa-solid fa-biohazard"></i>&emsp;Una invasión zombie ha comenzado y se comieron a los ingenieros.</p>
-            <p class="reason"><i class="fa-solid fa-radiation"></i>&emsp;Los 50's llamaron y traen el holocausto atómico.</p>
-            <p class="reason"><i class="fa-solid fa-cat"></i>&emsp;Oreo logró alcanzar la estratósfera y la falta de presión atmosférica le permitió volver a su forma original.</p>
-            <p class="reason"><i class="fa-solid fa-bug"></i>&emsp;@ViewBag["bodyInfo"]</p>
-        </div>
-        <div id="return_section">
-            <p><a href="">Inicio</a> | <a href="">Cerrar Sesión</a></p>
-        </div>
-    </main>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="~/css/error.css">
+        <script src="https://kit.fontawesome.com/af56365703.js" crossorigin="anonymous"></script>
+        <link rel="icon" href="~/error.ico">
+        <title>@ViewBag.info["tabInfo"]</title>
+    </head>
+    <body>
+        <main>
+            <div id="error_type" data-text="@ViewBag.info["tabInfo"]">@ViewBag.info["tabInfo"]</div>
+            <div id="error_advertisement">¡Ooppsss! Ocurrió un error.</div>
+            <p id="reason_banner">Estas pueden ser algunas razones:</p>
+            <div id="reasons_container">
+                <p class="reason"><i class="fa-solid fa-bugs"></i>&emsp;El final de los tiempos ha llegado y los servidores han muerto.</p>
+                <p class="reason"><i class="fa-solid fa-biohazard"></i>&emsp;Una invasión zombie ha comenzado y se comieron a los ingenieros.</p>
+                <p class="reason"><i class="fa-solid fa-radiation"></i>&emsp;Los 50's llamaron y traen el holocausto atómico.</p>
+                <p class="reason"><i class="fa-solid fa-cat"></i>&emsp;Oreo logró alcanzar la estratósfera y la falta de presión atmosférica le permitió volver a su forma original.</p>
+                <p class="reason"><i class="fa-solid fa-bug"></i>&emsp;@ViewBag.info["bodyInfo"]</p>
+            </div>
+            <div id="return_section">
+                <p><a href="">Inicio</a> | <a href="">Cerrar Sesión</a></p>
+            </div>
+        </main>
+    </body>
 </html>

@@ -1,3 +1,19 @@
+/*********************************************************************************************************************
+ *     █████╗ ██╗     ███████╗██╗  ██╗ █████╗ ███╗   ██╗██████╗ ██████╗  ██████╗ ███████╗    ███████╗███╗   ███╗     *
+ *    ██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔══██╗████╗  ██║██╔══██╗██╔══██╗██╔═══██╗██╔════╝    ██╔════╝████╗ ████║     *
+ *    ███████║██║     █████╗   ╚███╔╝ ███████║██╔██╗ ██║██║  ██║██████╔╝██║   ██║███████╗    █████╗  ██╔████╔██║     *
+ *    ██╔══██║██║     ██╔══╝   ██╔██╗ ██╔══██║██║╚██╗██║██║  ██║██╔══██╗██║   ██║╚════██║    ██╔══╝  ██║╚██╔╝██║     *
+ *    ██║  ██║███████╗███████╗██╔╝ ██╗██║  ██║██║ ╚████║██████╔╝██║  ██║╚██████╔╝███████║    ███████╗██║ ╚═╝ ██║     *
+ *    ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝    ╚══════╝╚═╝     ╚═╝     *
+ *                                                                                                                   *
+ *                                                                                                                   *
+ *                                 Copyright (c) 2025 Sinuhé Alejandro Gómez Hernández                               *
+ *                                                                                                                   *
+ *                              Permission is granted for free use, but NOT for sale/rent.                           *
+ *                             Commercial use is prohibited without explicit authorization.                          *
+ *                                                                                                                   *
+ *********************************************************************************************************************/
+
 using Models;
 using MySqlConnector;
 using System.Data;
@@ -117,6 +133,57 @@ public class AuthData
         {
             _logger.LogError($"❌ Ocurrió un error inesperado al intentar obtener la información del usuario loggeado. AuthData.cs -> GetUserData() .Error: {ex.Message}.");
             throw;
+        }
+    }
+
+    public void AddUser(UserCreateDTO user, string hashedPassword)
+    {
+        string addUserQuery = @"
+            INSERT INTO users( username, password, name, middlename, pat_surname, mat_surname, email, is_active, created_by, fk_accessLevel_id)
+            VALUES(@username, @password, @name, @middlename, @pat_surname, @mat_surname, @email, @is_active, @created_by, @fk_accessLevel_id);
+        ";
+        using (MySqlConnection addUserConn = new MySqlConnection(_connectionString))
+        {
+            addUserConn.Open();
+
+            using (MySqlTransaction addUserTran = addUserConn.BeginTransaction())
+            {
+                try
+                {
+                    using (MySqlCommand addUserCmd = new MySqlCommand(addUserQuery, addUserConn, addUserTran))
+                    {
+                        addUserCmd.Parameters.Add("@username", MySqlDbType.VarChar).Value = user.Username!.Trim();
+                        addUserCmd.Parameters.Add("@password", MySqlDbType.VarChar).Value = hashedPassword;
+                        addUserCmd.Parameters.Add("@name", MySqlDbType.VarChar).Value = user.Name!.Trim();
+                        addUserCmd.Parameters.Add("@middlename", MySqlDbType.VarChar).Value = user.Middlename?.Trim() ?? (object)DBNull.Value;
+                        addUserCmd.Parameters.Add("@pat_surname", MySqlDbType.VarChar).Value = user.Pat_surname!.Trim();
+                        addUserCmd.Parameters.Add("@mat_surname", MySqlDbType.VarChar).Value = user.Mat_surname!.Trim();
+                        addUserCmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = user.Email!.Trim();
+                        addUserCmd.Parameters.Add("@is_active", MySqlDbType.VarChar).Value = user.Is_active!.Trim();
+                        addUserCmd.Parameters.Add("@created_by", MySqlDbType.Int32).Value = user.Created_by;
+                        addUserCmd.Parameters.Add("@fk_accessLevel_id", MySqlDbType.Int32).Value = user.Fk_accessLevel_id;
+
+                        addUserCmd.ExecuteNonQuery();
+                    }
+
+                    addUserTran.Commit();
+                    _logger.LogInformation($"✅ Se registró exitosamente el usuario {user.Username}.");
+                }
+
+                catch (MySqlException SqlEx) when (SqlEx.Number == 1062) // 1062 corresponde a una violación de restricción UNIQUE. 
+                {
+                    addUserTran.Rollback();
+                    _logger.LogError($"Ocurrió un error al intentar insertar el usuario {user.Username}. Restricción UNIQUE violada. AuthData.cs -> AddUser(). Error: {SqlEx.Message}");
+                    throw new InvalidOperationException("El nombre de usuario o correo ya se encuentran registrados.", SqlEx);
+                }
+
+                catch (Exception ex)
+                {
+                    addUserTran.Rollback();
+                    _logger.LogError($"Error inesperado al inserta el usuario {user.Username}. AuthData.cs -> AddUser(). Error: {ex.Message}");
+                    throw;
+                }
+            }
         }
     }
 }

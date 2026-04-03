@@ -17,6 +17,8 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [HttpGet]
+    [AllowAnonymous]
     public IActionResult Index(string? reason=null, string? returnUrl=null)
     {
         ViewBag.SessionMessage = reason switch
@@ -27,13 +29,20 @@ public class HomeController : Controller
         };
 
         return View("Login");
-        //return RedirectToAction("SignIn", "Users");
-        //return RedirectToAction("ErrorHandler", new{ statusCode=404 });
     }
 
+    [HttpGet]
+    [Authorize]
     public IActionResult Main()
     {
         return View("Main");
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "global_admin")]
+    public IActionResult Settings()
+    {
+        return View("Settings");
     }
 
     public IActionResult Privacy()
@@ -41,6 +50,8 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpGet]
+    [AllowAnonymous]
     [ResponseCache(Duration=0, Location=ResponseCacheLocation.None, NoStore=true)]
     public IActionResult ErrorHandler(int statusCode, string? customError = null)
     {

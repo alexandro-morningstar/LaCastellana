@@ -3,6 +3,22 @@
     box-sizing: border-box;
 }
 
+:root {
+/* [data-theme="dark"] { */
+    --bg-body: #E27D60;
+    --bg-panels: #F5E6CCBB;
+    --icon-colors: #E27D60;
+    --text-color: #4A4A4A;
+}
+
+[data-theme="dark"] {
+/* :root { */
+    --bg-body: #1E272E;
+    --bg-panels: #8eaa87c6;
+    --icon-colors: #1E272E;
+    --text-color: #F5F6FA;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -10,7 +26,8 @@ body {
     width: 100%;        /* Porcentaje al 100% para respetar barras de scroll verticales */
     display: flex;
     flex-direction: row;
-    background-color: #E27D60;
+    background-color: var(--bg-body);
+    color: var(--text-color);
 }
 
 nav {
@@ -24,17 +41,17 @@ nav {
     justify-content: center;        /* Iconos al centro (verticalmente) */
     align-items: center;            /* Iconos al centro (horizontalmente) */
     gap: 2rem;
-    background-color: #f5e6ccbb;
+    background-color: var(--bg-panels);
     border-radius: 10px;
 }
 
 svg {
-    color: #E27D60;
+    color: var(--icon-colors);
 }
 
 main {
     flex: 1;            /* main toma todo el espacio width No tiedisponible despues de crear el nav */
-    background-color: #f5e6ccbb;
+    background-color: var(--bg-panels);
     border-radius: 20px;
     margin: 20px 20px 20px 10px;
 

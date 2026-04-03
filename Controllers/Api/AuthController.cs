@@ -22,10 +22,11 @@ namespace La_Castellana.Controllers.API
             _authData=authData;
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] UserLogin user) 
         {
+            Console.WriteLine("Entramos al controlador");
             try
             {
                 // --------- Inicio de Sesión.
@@ -34,12 +35,13 @@ namespace La_Castellana.Controllers.API
                     _logger.LogWarning($"⚠️ No fue posible continuar con la solicitud, los datos recibidos no coinciden con el modelo de Inicio de Sesión. ${ModelState}");
                     return StatusCode(StatusCodes.Status400BadRequest, new{ success=false, message="El modelo recibido no es válido." });
                 }
+                Console.WriteLine("Modelo válido");
 
                 bool loginStatus = _authData.LoginAuth(user);
                 if (!loginStatus)
                 {
                     _logger.LogWarning($"⚠️ Inicio de sesión fallido para el usuario: {user.Username}");
-                    return StatusCode(StatusCodes.Status401Unauthorized, new{ success=false, message="Credenciales incorrectas, inténtalo de nuevo." });
+                    return StatusCode(StatusCodes.Status401Unauthorized, new{ success=false, message="Las credenciales son incorrectas, valida tus datos e inténtalo de nuevo." });
                 }
 
                 LoggedInUser userData = _authData.GetUserData(user.Username!); // Inicio de sesión exitoso, obtener info del usuario.

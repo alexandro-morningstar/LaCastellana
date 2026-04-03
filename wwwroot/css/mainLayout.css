@@ -1,0 +1,85 @@
+/* Padding calculado al interior */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100dvh; /* Asegurar que ocupe todo el alto dinámicamente, adaptándose a las barras de navegación de móviles */
+    width: 100%;        /* Porcentaje al 100% para respetar barras de scroll verticales */
+    display: flex;
+    flex-direction: row;
+    background-color: #E27D60;
+}
+
+nav {
+    height: calc(100dvh - 40px);    /* Será un elemento fijo, por tanto, siempre debe tener el alto de la pantalla */
+    width: 50px;
+    margin: 20px 10px 20px 20px;
+    position: sticky;               /* Fijarla para que no desaparezca con scroll vertical */
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;        /* Iconos al centro (verticalmente) */
+    align-items: center;            /* Iconos al centro (horizontalmente) */
+    gap: 2rem;
+    background-color: #f5e6ccbb;
+    border-radius: 10px;
+}
+
+svg {
+    color: #E27D60;
+}
+
+main {
+    flex: 1;            /* main toma todo el espacio width No tiedisponible despues de crear el nav */
+    background-color: #f5e6ccbb;
+    border-radius: 20px;
+    margin: 20px 20px 20px 10px;
+
+    position: relative; /* Preparado para vistas hijas que utilicen position: absolute */
+    overflow-y: auto;   /* Si el contenido renderizado es muy largo, el scroll se genera dentro de main, no en toda la página */
+    padding: 1.5rem;      /* Espacio interno para que no choque el contenido con el border radius */
+}
+
+@media (max-width: 768px) {
+    body {
+        flex-direction: column-reverse;
+    }
+
+    nav {
+        width: calc(100% - 20px);
+        height: 60px;
+        flex-direction: row;
+        margin: 5px 10px 10px 10px;
+        top: auto; /* retirar explicitamente el top */
+        bottom: 0; /* Pegarlo a la parte inferior */
+        z-index: 1000; /* La barra siempre está por encima */
+    }
+
+    main {
+        width: calc(100% - 20px);
+        margin: 10px 10px 5px 10px;
+        overflow-y: visible;
+        /* Scroll vertical sobre toda la pagina pero con la barra fija */
+    }
+}
+
+/*
+ ¿Y cómo centro una vista específica (como un Login)?
+  En el HTML de esa vista específica, envuelves el contenido en un div contenedor y lo centras:
+
+   1 <!-- Dentro de Login.cshtml -->
+   2 <div class="vista-centrada">
+   3     <form>...</form>
+   4 </div>
+
+   1 En tu site.css o css específico de la vista
+   2 .vista-centrada {
+   3     min-height: 100%;
+   4     display: flex;
+   5     justify-content: center;
+   6     align-items: center;
+   7 }
+*/

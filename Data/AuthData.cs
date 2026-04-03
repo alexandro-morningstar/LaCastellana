@@ -32,7 +32,7 @@ public class AuthData
 
     public bool LoginAuth(UserLogin user)
     {
-        string getHashQuery = "SELECT password FROM users WHERE user_id=@user_id";
+        string getHashQuery = "SELECT password FROM users WHERE username=@username";
         string? storedHash = null;
 
         try
@@ -43,7 +43,7 @@ public class AuthData
 
                 using (MySqlCommand loginCmd = new MySqlCommand(getHashQuery, loginConn))
                 {
-                    loginCmd.Parameters.AddWithValue("@user_id", user.Username);
+                    loginCmd.Parameters.AddWithValue("@username", user.Username);
 
                     using (MySqlDataReader loginReader = loginCmd.ExecuteReader())
                     {

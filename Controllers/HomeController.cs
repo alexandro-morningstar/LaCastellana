@@ -31,6 +31,11 @@ public class HomeController : Controller
         //return RedirectToAction("ErrorHandler", new{ statusCode=404 });
     }
 
+    public IActionResult Main()
+    {
+        return View("Main");
+    }
+
     public IActionResult Privacy()
     {
         return View();

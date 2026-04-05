@@ -17,8 +17,8 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    [HttpGet]
     [AllowAnonymous]
+    [HttpGet("/Home/Index")]
     public IActionResult Index(string? reason=null, string? returnUrl=null)
     {
         ViewBag.SessionMessage = reason switch
@@ -31,15 +31,15 @@ public class HomeController : Controller
         return View("Login");
     }
 
-    [HttpGet]
     [Authorize]
+    [HttpGet("/Home/Main")]
     public IActionResult Main()
     {
         return View("Main");
     }
 
-    [HttpGet]
     [Authorize(Roles = "global_admin")]
+    [HttpGet("/Home/Settings")]
     public IActionResult Settings()
     {
         return View("Settings");
@@ -50,8 +50,8 @@ public class HomeController : Controller
         return View();
     }
 
-    [HttpGet]
     [AllowAnonymous]
+    [HttpGet("/Home/ErrorHandler")]
     [ResponseCache(Duration=0, Location=ResponseCacheLocation.None, NoStore=true)]
     public IActionResult ErrorHandler(int statusCode, string? customError = null)
     {

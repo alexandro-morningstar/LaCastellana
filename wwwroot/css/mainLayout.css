@@ -58,6 +58,9 @@ main {
     position: relative; /* Preparado para vistas hijas que utilicen position: absolute */
     overflow-y: auto;   /* Si el contenido renderizado es muy largo, el scroll se genera dentro de main, no en toda la página */
     padding: 1.5rem;      /* Espacio interno para que no choque el contenido con el border radius */
+
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 768px) {
@@ -82,21 +85,3 @@ main {
         /* Scroll vertical sobre toda la pagina pero con la barra fija */
     }
 }
-
-/*
- ¿Y cómo centro una vista específica (como un Login)?
-  En el HTML de esa vista específica, envuelves el contenido en un div contenedor y lo centras:
-
-   1 <!-- Dentro de Login.cshtml -->
-   2 <div class="vista-centrada">
-   3     <form>...</form>
-   4 </div>
-
-   1 En tu site.css o css específico de la vista
-   2 .vista-centrada {
-   3     min-height: 100%;
-   4     display: flex;
-   5     justify-content: center;
-   6     align-items: center;
-   7 }
-*/

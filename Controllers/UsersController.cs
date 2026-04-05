@@ -22,8 +22,19 @@ public class UsersController : Controller
         _authService = authService;
     }
 
-    [HttpGet("SignIn")]
-    [ValidateAntiForgeryToken]
+    [HttpGet("/Users/Users")]
+    [Authorize]
+    public IActionResult Users()
+    {
+        if (TempData["message"] != null)
+        {
+            ViewBag.message = TempData["message"];
+        }
+        return View("Users");
+    }
+
+    [HttpGet("/Users/SignIn")]
+    [Authorize]
     public IActionResult SignIn()
     {
         if (TempData["message"] != null) // Revisar si existe un mensaje de alguna redirección previa.
@@ -33,7 +44,8 @@ public class UsersController : Controller
         return View("SignIn");
     }
 
-    [HttpPost("SignIn")]
+    [HttpPost("/Users/SignIn")]
+    [Authorize]
     [ValidateAntiForgeryToken]
     public IActionResult SignIn(UserCreateDTO user)
     {

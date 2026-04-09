@@ -28,6 +28,7 @@ builder.Services.AddAntiforgery(
 ); // Protección CSRF.
 builder.Services.AddScoped<AuthData>();     // Capa de datos Auth.
 builder.Services.AddScoped<AuthService>();  // Instancia de servicios Auth.
+builder.Services.AddScoped<UsersData>();    // Capa de datos de Users.
 //builder.Services.AddScoped<AppData>();      // Capa de datos de App.
 builder.Services.AddAuthentication().AddCookie(
     options =>

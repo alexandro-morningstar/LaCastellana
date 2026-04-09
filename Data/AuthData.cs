@@ -16,7 +16,6 @@
 
 using Models;
 using MySqlConnector;
-using System.Data;
 
 public class AuthData
 {
@@ -27,7 +26,7 @@ public class AuthData
     public AuthData(ILogger<AuthData> logger, IConfiguration servicesConfiguration)
     {
         _logger = logger;
-        _connectionString = servicesConfiguration.GetConnectionString("DevConnection") ?? throw new Exception("No se encontró la cadena de conexión \"DevConnection\"");
+        _connectionString = servicesConfiguration.GetConnectionString("DevConnection") ?? throw new Exception("No se encontró la cadena de conexión");
     }
 
     public bool LoginAuth(UserLogin user)

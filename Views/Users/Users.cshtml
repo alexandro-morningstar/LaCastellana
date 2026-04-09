@@ -5,7 +5,35 @@
 }
 
 <div id="main-container">
-    // Aqui me quedé: Hacer la vista de usuarios con DataTables (o una alternativa mas nueva) y los botones para editar, ver, borras y agregar nuevo.
+    @Html.AntiForgeryToken()
+    <div id="action-btns">
+        <div>
+            <a href="">
+                Regresar
+            </a>
+        </div>
+        <div>
+            <a href="">
+                Nuevo Usuario
+            </a>
+        </div>
+    </div>
+    <div id="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre de Usuario</th>
+                    <th>Nombre Completo</th>
+                    <th>Nivel de Acceso</th>
+                    <th>Estatus</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Contenido generado dinámicamente con jQuery/DataTables -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @section BodyScripts {

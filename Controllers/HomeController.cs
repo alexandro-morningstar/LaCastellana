@@ -18,7 +18,7 @@ public class HomeController : Controller
     }
 
     [AllowAnonymous]
-    [HttpGet("/Home/Index")]
+    [HttpGet("/")]
     public IActionResult Index(string? reason=null, string? returnUrl=null)
     {
         ViewBag.SessionMessage = reason switch

@@ -36,6 +36,17 @@ namespace Models
         public int AccessLevel_id { get; set; }
     }
 
+    public class UserListDTO
+    {
+        public string? Username { get; set; }
+        public string? Name { get; set; }
+        public string? Middlename { get; set; }
+        public string? Pat_surname { get; set; }
+        public string? Mat_surname { get; set; }
+        public string? Is_active { get; set; }
+        public string? AccessLevel { get; set; }
+    }
+
     public class UserLogin
     {
         [Required(ErrorMessage = "El nombre de usuario es obligatorio.")]
@@ -148,4 +159,6 @@ namespace Models
         [MaxLength(32, ErrorMessage = "\"Actualizado por\" no puede exceder los 32 caracteres.")]
         public int Updated_by { get; set; }
     }
+
+    
 }

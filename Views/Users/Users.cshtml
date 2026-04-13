@@ -1,6 +1,8 @@
 @{ Layout="../_MainLayout"; }
 
 @section HeadScripts {
+    <script src="//cdn.datatables.net/2.3.7/js/dataTables.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/2.3.7/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="~/css/users.css">
 }
 
@@ -19,7 +21,7 @@
         </div>
     </div>
     <div id="table-container">
-        <table>
+        <table id="users-table">
             <thead>
                 <tr>
                     <th>Nombre de Usuario</th>

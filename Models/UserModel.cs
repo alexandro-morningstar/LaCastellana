@@ -36,8 +36,9 @@ namespace Models
         public int AccessLevel_id { get; set; }
     }
 
-    public class UserListDTO
+    public class UserListElementDTO
     {
+        public int User_id { get; set; }
         public string? Username { get; set; }
         public string? Name { get; set; }
         public string? Middlename { get; set; }

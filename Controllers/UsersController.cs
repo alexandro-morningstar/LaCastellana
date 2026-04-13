@@ -14,12 +14,14 @@ public class UsersController : Controller
     private readonly ILogger<UsersController> _logger;
     private readonly AuthService _authService;
     private readonly AuthData _authData;
+    private readonly UsersData _usersData;
 
-    public UsersController(ILogger<UsersController> logger, AuthData authData, AuthService authService)
+    public UsersController(ILogger<UsersController> logger, AuthData authData, AuthService authService, UsersData usersData)
     {
         _logger = logger;
         _authData = authData;
         _authService = authService;
+        _usersData = usersData;
     }
 
     [HttpGet("/Users/Users")]
@@ -98,4 +100,28 @@ public class UsersController : Controller
             return RedirectToAction("SignIn");
         }
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "global_admin")]
+        public IActionResult GetUsers()
+        {
+            int draw = int.Parse(Request.Form["draw"]);
+            int start = int.Parse(Request.Form["start"]);
+            int length = int.Parse(Request.Form["length"]);
+            string searchValue = Request.Form["search[value]"];
+            string sortColumnIndex = Request.Form["order[0][column]"];
+            string sortDirection = Request.Form["order[0][dir]"];
+
+            try
+            {
+                var users = _usersData.GetUsers(draw, start, length, searchValue, sortColumnIndex, sortDirection);
+                return Json(users);
+            }
+
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
 }

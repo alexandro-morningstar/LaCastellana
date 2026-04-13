@@ -3,7 +3,7 @@ using MySqlConnector;
 
 public class UsersData
 {
-    private readonly ILogger<AuthData> _logger;
+    private readonly ILogger<UsersData> _logger;
     private readonly string _connectionString;
     
     public UsersData(ILogger<UsersData> logger, IConfiguration servicesConfiguration)
@@ -12,9 +12,9 @@ public class UsersData
         _connectionString = servicesConfiguration.GetConnectionString("DevConnection") ?? throw new Exception("No se encontró la cadena de conexión");
     }
 
-    public DataTablesResponse<UserListDTO> GetUsers(int draw, int start, int length, string searchValue, string sortColumn, string sortDirection)
+    public DataTablesResponse<UserListElementDTO> GetUsers(int draw, int start, int length, string searchValue, string sortColumn, string sortDirection)
     {
-        var response = new DataTablesResponse<UserListDTO> { Draw = draw };
+        var response = new DataTablesResponse<UserListElementDTO> { Draw = draw };
 
         var validColumns = new Dictionary<string, string>
         {
@@ -50,6 +50,7 @@ public class UsersData
                 }
                 string dataQuery = $@"
                     SELECT
+                        u.user_id,
                         u.username,
                         u.name,
                         u.middlename,
@@ -65,9 +66,44 @@ public class UsersData
                 ";
                 using (MySqlCommand dataCmd = new MySqlCommand(dataQuery, usersConn))
                 {
-                    
+                    dataCmd.Parameters.AddWithValue("@search", $"%{searchValue}%");
+                    dataCmd.Parameters.AddWithValue("@length", length);
+                    dataCmd.Parameters.AddWithValue("@start", start);
+
+                    using (MySqlDataReader usersReader = dataCmd.ExecuteReader())
+                    {
+                        while (usersReader.Read())
+                        {
+                            response.Data.Add(new UserListElementDTO
+                            {
+                                User_id = usersReader.GetInt32("user_id"),
+                                Username = usersReader.GetString("username"),
+                                Name = usersReader.GetString("name"),
+                                Middlename = usersReader.GetString("middlename"),
+                                Pat_surname = usersReader.GetString("pat_surname"),
+                                Mat_surname = usersReader.GetString("mat_surname"),
+                                Is_active = usersReader.GetString("is_active"),
+                                AccessLevel = usersReader.GetString("accessLevel")
+                            });
+                        }
+                    }
+                }
+
+                // --- Conteo filtrado.
+                string filteredQuery = $"SELECT COUNT(*) FROM users u {whereClause}";
+                using (MySqlCommand filterCmd = new MySqlCommand(filteredQuery, usersConn))
+                {
+                    response.RecordsFiltered = Convert.ToInt32(filterCmd.ExecuteScalar());
                 }
             }
+
+            return response;
+        }
+
+        catch (Exception ex)
+        {
+            _logger.LogError($"Ocurrió un error al intentar recuperar los usuarios. UsersData.cs -> GetUsers(). Error: {ex.Message}");
+            throw;
         }
     }
 }

@@ -1,0 +1,23 @@
+@{ Layout = null; }
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="~/img/bowl-light.ico">
+        <link rel="stylesheet" href="~/css/error.css">
+        <title>La Castellana</title>
+    </head>
+    <body>
+        <main>
+            <div id="error_code" data-text="Error: @ViewBag.info["error_code"]">
+                <h4>Error: @ViewBag.info["error_code"]</h4>
+            </div>
+            <p>¡Ooppsss! Parece que algo salió mal.</p>
+            <p id="reason_description">@ViewBag.info["error_description"]</p>
+            <p><a href="/Home/Main">Página Principal</a> | <a href="/Login">Inicio de Sesión</a></p>
+        </main>
+        <script src="~/js/error.js"></script>
+    </body>
+</html>

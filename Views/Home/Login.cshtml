@@ -1,0 +1,91 @@
+@{ Layout=null; }
+@model La_Castellana.Models.UserLoginDTO;
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="~/css/login.css">
+        <link rel="shortcut icon" href="~/img/bowl-light.ico">
+        <title>Inicio de Sesión</title>
+    </head>
+    <body>
+        <!-- Inicio: Mensajes del Servidor -->
+        <div id="alerts-container">
+            @if (TempData["NotificationType"] != null && TempData["NotificationMessage"] != null){
+                var notificationType = TempData["NotificationType"]!.ToString();
+                var NotificationMessage = TempData["NotificationMessage"]!.ToString();
+
+                @switch (notificationType) {
+                    case "Error":
+                        <div class="alert alert-danger">
+                            @NotificationMessage
+                        </div>
+                        break;
+                    case "Warning":
+                        <div class="alert alert-warning">
+                            @NotificationMessage
+                        </div>
+                        break;
+                    case "Info":
+                        <div class="alert alert-info">
+                            @NotificationMessage
+                        </div>
+                        break;
+                    case "Success":
+                        <div class="alert alert-success">
+                            @NotificationMessage
+                        </div>
+                        break;
+                    default:
+                        <div class="alert alert-secondary">
+                            @NotificationMessage
+                        </div>
+                        break;
+                }
+            }
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+        <!-- Fin: Mensajes del Servidor -->
+
+        <!-- Inicio: Animaciones de fondo -->
+        <div class="blob" id="blob-1"></div>
+        <div class="blob" id="blob-2"></div>
+        <div class="blob" id="blob-3"></div>
+        <div class="blob" id="blob-4"></div>
+        <!-- Fin: Animaciones de fondo -->
+
+        <!-- Inicio: Contenerdor del Login -->
+        <div id="glass-login-container">
+            <div id="login-header">
+                <h2>Iniciar Sesión</h2>
+                <p>La Castellana App</p>
+            </div>
+
+            <form action="#" method="post">
+                @Html.AntiForgeryToken() <!-- Token CSRF -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="username" asp-for="Username" placeholder="Nombre de Usuario" required>
+                    <label for="username">Nombre de Usuario</label>
+                    <span asp-validation-for="Username" class="text-warning"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="password" asp-for="Password" placeholder="Contraseña" required>
+                    <label for="password">Constraseña</label>
+                    <span asp-validation-for="Password" class="text-warning"></span>
+                </div>
+
+                <button class="btn-glass-primary" type="submit">
+                    Ingresar
+                </button>
+
+                <a href="#" id="forgot-password">¿Olvidaste tu contraseña?</a>
+            </form>
+        </div>
+        <!-- Fin: Contenedor del Login -->
+        <script src="~/bin/bootstrap/dist/js/bootstrap.min.js"></script>
+    </body>
+</html>

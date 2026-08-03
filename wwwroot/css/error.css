@@ -1,0 +1,166 @@
+@font-face {
+    font-family: "Share Tech Mono";
+    src: url("../fonts/ShareTechMono-Regular.ttf");
+}
+
+* {
+    font-family: "Share Tech Mono", monospace;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background-color: #0001AB;
+    color: aliceblue;
+    overflow: hidden; /* Evita scrollbars si las scanlines se salen */
+    position: relative;
+}
+
+/* EFECTO CRT: Líneas de escaneo (Scanlines) */
+body::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0) 50%,
+        rgba(0, 0, 0, 0.15) 50%,
+        rgba(0, 0, 0, 0.15)
+    );
+    background-size: 100% 4px; /* Grosor de la línea */
+    z-index: 50;
+    pointer-events: none; /* Permite hacer clic a través de las líneas */
+}
+
+/* EFECTO CRT: Viñeta oscura en los bordes simulando la curvatura de la pantalla */
+body::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
+    z-index: 51;
+    pointer-events: none;
+}
+
+main {
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+    animation: crt-flicker 0.15s infinite; /* Parpadeo de pantalla */
+}
+
+@keyframes crt-flicker {
+    0% { opacity: 0.95; }
+    50% { opacity: 1; }
+    100% { opacity: 0.98; }
+}
+
+/* EFECTO GLITCH EN EL CÓDIGO DE ERROR */
+#error_code {
+    margin: 0;
+    position: relative;
+}
+
+#error_code h4 {
+    font-size: 6rem; /* Código grande e imponente */
+    margin: 0;
+    position: relative;
+    color: aliceblue;
+    letter-spacing: 5px;
+}
+
+/* Capas duplicadas para el glitch usando el data-text */
+#error_code h4::before,
+#error_code h4::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0001AB; /* Fondo azul para tapar el texto original al moverse */
+}
+
+/* Sombra blanca translúcida (Glitch Izquierdo) */
+#error_code h4::before {
+    left: 3px;
+    text-shadow: -2px 0 rgba(255, 255, 255, 0.8); 
+    animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+}
+
+/* Sombra azul claro (Glitch Derecho) */
+#error_code h4::after {
+    left: -3px;
+    text-shadow: 2px 0 rgba(180, 220, 255, 0.7); 
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+/* Clase inyectada por JS para temblores violentos */
+.heavy-glitch::before {
+    animation-duration: 0.2s !important;
+    left: 10px !important;
+}
+.heavy-glitch::after {
+    animation-duration: 0.15s !important;
+    left: -10px !important;
+}
+
+/* Animaciones de cortes horizontales (Clip-Path) */
+@keyframes glitch-anim-1 {
+    0% { clip-path: inset(20% 0 80% 0); }
+    20% { clip-path: inset(60% 0 10% 0); }
+    40% { clip-path: inset(40% 0 50% 0); }
+    60% { clip-path: inset(80% 0 5% 0); }
+    80% { clip-path: inset(10% 0 70% 0); }
+    100% { clip-path: inset(30% 0 50% 0); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip-path: inset(10% 0 60% 0); }
+    20% { clip-path: inset(30% 0 20% 0); }
+    40% { clip-path: inset(70% 0 10% 0); }
+    60% { clip-path: inset(20% 0 50% 0); }
+    80% { clip-path: inset(50% 0 30% 0); }
+    100% { clip-path: inset(5% 0 80% 0); }
+}
+
+/* Estilización de textos y enlaces */
+p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    text-shadow: 0 0 4px rgba(255,255,255,0.4); /* Resplandor retro */
+}
+
+#reason_description {
+    max-width: 90%;
+    background-color: aliceblue;
+    color: #0001AB;
+    padding: 5px 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+a {
+    text-decoration: none;
+    color: aliceblue;
+    border-bottom: 2px solid aliceblue;
+    padding-bottom: 2px;
+    margin: 0 10px;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    text-shadow: 0 0 10px aliceblue;
+    background-color: aliceblue;
+    color: #0001AB;
+}

@@ -41,7 +41,7 @@ CREATE TABLE users (
     updated_at DATETIME NULL,
     PRIMARY KEY (user_id),
     CONSTRAINT fk_users_roles FOREIGN KEY(rol_id) REFERENCES roles(rol_id)
-);
+); -- PENDIENTE: Agregar restricción UNIQUE a username.
 
 CREATE TABLE item_categories (
     category_id INT AUTO_INCREMENT NOT NULL,
@@ -159,3 +159,6 @@ CREATE INDEX idx_users_name ON users(name, pat_surname);
 -- ============ Índices de Baja Cardinalidad (Filtros Comunes).
 CREATE INDEX idx_orders_status ON orders(is_active, is_completed);
 CREATE INDEX idx_tables_occupied ON tables(is_occupied);
+
+-- ============ Consultas de Prueba.
+SELECT * FROM users;

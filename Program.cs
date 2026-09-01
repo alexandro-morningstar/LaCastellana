@@ -21,8 +21,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-// builder.Services.AddScoped<AuthData>();
-// builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<AuthData>();
+builder.Services.AddScoped<AuthService>();
 // builder.Services.AddScoped<AdminData>();
 
 // =============== Configuración de Seguridad.
@@ -66,8 +66,8 @@ builder.Services.AddAuthentication().AddCookie(
                 }
 
                 // Si no fue por Fetch, significa que fue una petición directa a Controlador.
-                var returnUrl = Uri.EscapeDataString(ctx.Request.Path + ctx.Request.QueryString);               // Codificar la URL actual, para redirigir nuevamente aquí después del Login.
-                var loginUrl = $"{options.LoginPath}?reason={reason}&{options.ReturnUrlParameter}={returnUrl}"; // Construir la URL del login con parámetros de Motivo y Redirección.
+                    var returnUrl = Uri.EscapeDataString(ctx.Request.Path + ctx.Request.QueryString);               // Codificar la URL actual, para redirigir nuevamente aquí después del Login.
+                    var loginUrl = $"{options.LoginPath}?reason={reason}&{options.ReturnUrlParameter}={returnUrl}"; // Construir la URL del login con parámetros de Motivo y Redirección.
                 ctx.Response.Redirect(loginUrl);
 
                 return Task.CompletedTask;

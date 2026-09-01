@@ -13,32 +13,27 @@
  *                             Commercial use is prohibited without explicit authorization.                          *
  *                                                                                                                   *
  *********************************************************************************************************************/
+using System.Security.Cryptography;
 
-using System.ComponentModel.DataAnnotations;
-
-namespace La_Castellana.Models
+public class AuthService
 {
-    public class UserLoginDTO
+    public bool VerifyPassword(string loginPassword, string storedHash)
     {
-        [Required(ErrorMessage = "El nombre de usuario es obligatorio")]
-        public string? Username { get; set; } = string.Empty;
+        // === Descomponer el hash almacenado. Se usa split para obtener List<string> con dos elementos: [<salt_base64>, <hash_base64>].
+        var hashParts = storedHash.Split('.');
 
-        [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        public string? Password { get; set; } = string.Empty;
+        // === En caso de no existir exactamente dos partes, significa que el hash está corrupto.
+        if (hashParts.Length != 2) { return false; }
+
+        var salt = Convert.FromBase64String(hashParts[0]); // Decodificación del Salt.
+        var hash = Convert.FromBase64String(hashParts[1]); // Decofificación del Hash.
+
+        // === A partir de la Salt recuperada, generar otro hash con el password proporcionado por el usuario para iniciar sesión.
+        var loginHash = Rfc2898DeriveBytes.Pbkdf2(loginPassword, salt, 100_000, HashAlgorithmName.SHA256, 32);
+
+        // === Realizar una comparación segura: true = son idénticos | false = son diferentes.
+        return CryptographicOperations.FixedTimeEquals(hash, loginHash);
     }
 
-    public class LoggedInUser
-    {
-        public int User_id { get; set; }
-        public string? Username { get; set; }
-        public string? Name { get; set; }
-        public string? Middlename { get; set; }
-        public string? Pat_surname { get; set; }
-        public string? Mat_surname { get; set; }
-        public string? Email { get; set; }
-        public bool? Is_deleted { get; set; }
-        public string? Rol { get; set; } // === Se usa como string para comparar el texto "Administrador", "Usuario" y no por Id.
-    }
-
-
+    
 }

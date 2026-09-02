@@ -113,13 +113,15 @@ public class AuthData
                     {
                         if (userReader.Read())
                         {
-                            user.User_id = userReader.GetInt32("user_id");
-                            user.Username = userReader.GetString("username");
-                            user.Middlename = userReader.GetString("middlename");
+                            user.User_id     = userReader.GetInt32("user_id");
+                            user.Username    = userReader.GetString("username");
+                            user.Name        = userReader.GetString("name");
+                            user.Middlename  = (userReader["middlename"] as string) ?? "";
                             user.Pat_surname = userReader.GetString("pat_surname");
-                            user.Email = userReader.GetString("email");
-                            user.Is_deleted = userReader.GetBoolean("is_deleted");
-                            user.Rol = userReader.GetString("rol_name");
+                            user.Mat_surname = (userReader["mat_surname"] as string) ?? "";
+                            user.Email       = userReader.GetString("email");
+                            user.Is_deleted  = userReader.GetBoolean("is_deleted");
+                            user.Rol         = userReader.GetString("rol_name");
                         }
 
                         return user;
@@ -132,6 +134,37 @@ public class AuthData
         {
             _logger.LogError($"Error inesperado en AuthData.cs => GetUserData() al intentar obtener la información del usuario. Error: {ex.Message}");
             throw;
+        }
+    }
+
+
+    public void AddUser(UserCreateDTO user, string hashedPassword)
+    {
+        string checkUserQuery = "SELECT user_id, username FROM users WHERE username = @username;";
+        string reactivateUserQuery = "UPDATE users SET is_deleted = 1 WHERE user_id = @user_id";
+        string createUserQuery = @"
+            INSERT INTO users(username, name, middlename, pat_surname, mat_surname, email, rol, created_by)
+            VALUES(@username, @name, @middlename, @pat_surname, @mat_surname, @email, @rol, @created_by);
+        ";
+
+        using (MySqlConnection addUserConn = new MySqlConnection(_connectionString))
+        {
+            addUserConn.Open();
+
+            using (MySqlCommand checkUserCmd = new MySqlCommand(checkUserQuery, addUserConn))
+            {
+                // TODO: Hacer la lógica del chequeo
+                // Luego la reactivación
+            }
+
+            // El insert o notificar que ya existe y está activo.
+            using (MySqlTransaction addUserTran = addUserConn.BeginTransaction())
+            {
+                try
+                {
+                    using (MySqlCommand addUserCmd = new MySqlCommand())
+                }
+            }
         }
     }
 }

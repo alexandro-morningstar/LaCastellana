@@ -86,7 +86,11 @@ public class HomeController : BaseController
         ViewBag.info = errorInfo;
         return View("Error");
     }
+
+    [AllowAnonymous]
+    [HttpGet("/Home/Main")]
+    public IActionResult Main()
+    {
+        return View("Main");
+    }
 }
-
-
-//TODO: Modulo de Login y redirección a Main

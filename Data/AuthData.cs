@@ -138,32 +138,77 @@ public class AuthData
     }
 
 
-    public void AddUser(UserCreateDTO user, string hashedPassword)
+    public void AddUser(UserCreateDTO user, string hashedPassword, int created_by)
     {
-        string checkUserQuery = "SELECT user_id, username FROM users WHERE username = @username;";
+        string checkUserQuery = "SELECT user_id, username, is_deleted FROM users WHERE username = @username;";
         string reactivateUserQuery = "UPDATE users SET is_deleted = 1 WHERE user_id = @user_id";
         string createUserQuery = @"
-            INSERT INTO users(username, name, middlename, pat_surname, mat_surname, email, rol, created_by)
-            VALUES(@username, @name, @middlename, @pat_surname, @mat_surname, @email, @rol, @created_by);
+            INSERT INTO users(username, name, middlename, pat_surname, mat_surname, email, rol_id, created_by)
+            VALUES(@username, @name, @middlename, @pat_surname, @mat_surname, @email, @rol_id, @created_by);
         ";
+        bool user_exist = false; // === Se asume que no existe el usuario.
+        bool deletion_flag = false;
+        int user_id = 0;
 
         using (MySqlConnection addUserConn = new MySqlConnection(_connectionString))
         {
             addUserConn.Open();
 
+            // === 1. Revisar si ya existe el usuario y si está eliminado o no.
             using (MySqlCommand checkUserCmd = new MySqlCommand(checkUserQuery, addUserConn))
             {
                 // TODO: Hacer la lógica del chequeo
                 // Luego la reactivación
+                checkUserCmd.Parameters.Add("@username", MySqlDbType.VarChar).Value = user.Username!.Trim();
+
+                using (MySqlDataReader checkReader = checkUserCmd.ExecuteReader())
+                {
+                    if (checkReader.Read())
+                    { // === Si existe el usuario, definir bandera de borrado y obtener user_id.
+                        deletion_flag = checkReader.GetBoolean("is_deleted") == true ? true : false;
+                        user_id = checkReader.GetInt32("user_id");
+                    }
+                }
             }
 
             // El insert o notificar que ya existe y está activo.
             using (MySqlTransaction addUserTran = addUserConn.BeginTransaction())
             {
-                try
+                if (!user_exist) // === A. El usuario no existe: Crearlo.
                 {
-                    using (MySqlCommand addUserCmd = new MySqlCommand())
+                    using (MySqlCommand createCmd = new MySqlCommand(createUserQuery, addUserConn))
+                    {
+                        createCmd.Parameters.Add("@username", MySqlDbType.VarChar).Value = user.Username;
+                        createCmd.Parameters.Add("@name", MySqlDbType.VarChar).Value = user.Name;
+                        createCmd.Parameters.Add("@middlename", MySqlDbType.VarChar).Value = user.Middlename;
+                        createCmd.Parameters.Add("@pat_surname", MySqlDbType.VarChar).Value = user.Pat_surname;
+                        createCmd.Parameters.Add("@mat_surname", MySqlDbType.VarChar).Value = user.Mat_surname;
+                        createCmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = user.Email;
+                        createCmd.Parameters.Add("@rol_id", MySqlDbType.Int32).Value = user.Rol_id;
+                        createCmd.Parameters.Add("@created_by", MySqlDbType.Int32).Value = created_by;
+
+                        createCmd.ExecuteNonQuery();
+                    }
                 }
+
+                else
+                {
+                    if (deletion_flag) // B. El usuario ya existe y está desactivado: Reactivarlo.
+                    {
+                        using (MySqlCommand activateCmd = new MySqlCommand(reactivateUserQuery, addUserConn))
+                        {
+                            activateCmd.Parameters.Add("@user_id", MySqlDbType.Int32).Value = user_id;
+                            activateCmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    else // C. El usuario sí existe y no está desactivado.
+                    {
+                        
+                    }
+                }
+                addUserTran.Commit();
+                _logger.LogInformation($"Usuario {user.Name} {user.Pat_surname} registrador exitosamente.");
             }
         }
     }

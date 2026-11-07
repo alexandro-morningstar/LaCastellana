@@ -53,7 +53,7 @@ public class HomeController : BaseController
     }
 
     [AllowAnonymous]
-    [HttpGet("/Home/ErrorHandler")]
+    [HttpGet("/ErrorHandler")]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult ErrorHandler(int? statusCode = null)
     {
@@ -88,7 +88,7 @@ public class HomeController : BaseController
     }
 
     [AllowAnonymous]
-    [HttpGet("/Home/Main")]
+    [HttpGet("/Main")]
     public IActionResult Main()
     {
         return View("Main");

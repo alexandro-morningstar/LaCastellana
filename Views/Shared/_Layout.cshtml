@@ -1,3 +1,5 @@
+@{ var currentAction = ViewContext.RouteData.Values["action"]?.ToString(); }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +7,7 @@
     <meta lang="es-MX">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="@Antiforgery.GetAndStoreTokens(Context).RequestToken">
+    <link rel="shortcut icon" href="~/img/bowl-light.ico">
     <link rel="stylesheet" href="~/css/reset.css">
     <link rel="stylesheet" href="~/css/_Layout.css">
     <title>@ViewBag.PageName - La Castellana</title>
@@ -21,31 +24,31 @@
                 <span>La Castellana</span>
             </div>
             <div id="options">
-                <a asp-controller="Home" asp-action="Main" class="nav-link">
+                <a asp-controller="Home" asp-action="Main" class="nav-link @(currentAction == "Main" ? "active" : "")">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
                         <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
                     </svg>
                     <span>Inicio</span>
                 </a>
-                <a asp-controller="Home" asp-action="Tables">
+                <a asp-controller="Home" asp-action="Tables" class="nav-link @(currentAction == "Tables" ? "active" : "")">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-columns-gap" viewBox="0 0 16 16">
                         <path d="M6 1v3H1V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm14 12v3h-5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM6 8v7H1V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zm14-6v7h-5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1z"/>
                     </svg>
                     <span>Mesas</span>
                 </a>
-                <a asp-controller="Home" asp-action="Delivery">
+                <a asp-controller="Home" asp-action="Delivery" class="nav-link @(currentAction == "Delivery" ? "active" : "")">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
                         <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
                     </svg>
                     <span>WhatsApp</span>
                 </a>
-                <a asp-controller="Home" asp-action="Dashboard">
+                <a asp-controller="Home" asp-action="Dashboard" class="nav-link @(currentAction == "Dashboard" ? "active" : "")">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
                         <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                <a asp-controller="Home" asp-action="Settings">
+                <a asp-controller="Settings" asp-action="Settings" class="nav-link @(currentAction == "Settings" ? "active" : "")">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                         <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
                         <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
@@ -69,15 +72,34 @@
                 <!-- Aquí irá una tabla con las estadisticas del día, ej: pedidos abiertos, pedidos cerrados, mesas ocupadas, venta del dia (efectivo/transferencia), etc... -->
             </div>
             <div id="clock">
-
+                <div class="flip-clock">
+                    <div class="flip-row">
+                        <div class="flip-unit" data-field="day"></div>
+                        <span class="flip-sep">·</span>
+                        <div class="flip-unit" data-field="month"></div>
+                        <span class="flip-sep">·</span>
+                        <div class="flip-unit flip-unit--wide" data-field="year"></div>
+                    </div>
+                    <div class="flip-row">
+                        <div class="flip-unit" data-field="hour"></div>
+                        <span class="flip-sep">:</span>
+                        <div class="flip-unit" data-field="minute"></div>
+                        <span class="flip-sep">:</span>
+                        <div class="flip-unit" data-field="second"></div>
+                        <div class="flip-unit flip-unit--meridiem" data-field="meridiem"></div>
+                    </div>
+                </div>
             </div>
         </nav>
         <section id="main-section" class="glass-panel">
-            @* =============== Contenedor principal de la página. =============== *@
-            @RenderBody()
+            @* =============== Contenedor principal de la página (con scroll interno). =============== *@
+            <div class="main-content">
+                @RenderBody()
+            </div>
         </section>
     </main>
-    <script src="~/js/_Layout.js" asp-append-version="true"></script>
+    <script src="~/js/orbs.js" asp-append-version="true"></script>
+    <script src="~/js/flip-clock.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

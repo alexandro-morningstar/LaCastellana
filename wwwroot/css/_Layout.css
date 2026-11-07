@@ -63,17 +63,22 @@ main {
 
 /* =============== Barra de Navegación =============== */
 nav {
-    min-width: 5%;
-    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: clamp(240px, 20vw, 360px);
     min-height: 95dvh;
     padding: 24px 16px;
+    container-type: inline-size;
+    container-name: sidebar;
 }
 
 #app-name {
+    flex: 0 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: solid greenyellow 1px;
+    /* border: solid greenyellow 1px; */
     min-height: 5dvh;
 }
 
@@ -85,40 +90,268 @@ nav {
 }
 
 #options {
-    border: solid blue 1px;
+    flex: 0 0 auto;
+    /* border: solid blue 1px; */
     padding: 10px;
-    min-height: calc(40dvh - 20px);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    /* align-items: center; */
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 #options a {
-    border: solid palevioletred 1px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.03);
+    transition: background-color 0.25s ease,
+                border-color 0.25s ease,
+                backdrop-filter 0.25s ease;
     font-size: large;
     gap: 10px;
     text-decoration: none;
     color: aliceblue;
-    padding-left: 10px;
+    padding-left: 20px;
     height: 7dvh;
     display: flex;
     align-items: center;
 }
 
+#options a:hover,
+#options a:focus-visible {
+    background-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+}
+
+#options a.active {
+    background-color : #1b1e22;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+#stadistics,
+#clock {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
 #stadistics {
-    border: solid yellow 1px;
-    min-height: 32dvh;
+    flex: 1 1 auto;
+    padding: 14px;
 }
 
 #clock {
-    border: solid pink 1px;
-    min-height: 10dvh;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* =============== Reloj (Flip Clock) =============== */
+.flip-clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* A partir de aquí el nav (contenedor del reloj) ya tiene suficiente
+   ancho real para mostrar fecha y hora en una sola línea. */
+@container sidebar (min-width: 260px) {
+    .flip-clock {
+        flex-direction: row;
+        gap: 14px;
+    }
+}
+
+.flip-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.flip-sep {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.85rem;
+    line-height: 32px;
+    padding: 0 1px;
+}
+
+.flip-card {
+    position: relative;
+    width: 22px;
+    height: 32px;
+    perspective: 140px;
+}
+
+.flip-unit--wide .flip-card {
+    width: 46px;
+}
+
+.flip-unit--meridiem .flip-card {
+    width: 32px;
+}
+
+.flip-card__half,
+.flip-card__leaf {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.flip-card__half span,
+.flip-card__leaf span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 32px;
+    text-align: center;
+    font: 600 0.95rem/32px system-ui, -apple-system, sans-serif;
+    font-variant-numeric: tabular-nums;
+    color: #e8eaed;
+}
+
+.flip-unit--meridiem .flip-card__half span,
+.flip-unit--meridiem .flip-card__leaf span {
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+}
+
+.flip-card__half--top,
+.flip-card__leaf--front {
+    top: 0;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.flip-card__half--top span,
+.flip-card__leaf--front span {
+    top: 0;
+}
+
+.flip-card__half--bottom,
+.flip-card__leaf--back {
+    bottom: 0;
+    border-radius: 0 0 4px 4px;
+}
+
+.flip-card__half--bottom span,
+.flip-card__leaf--back span {
+    top: -16px;
+}
+
+.flip-card__half {
+    z-index: 1;
+}
+
+.flip-card__leaf {
+    z-index: 2;
+    backface-visibility: hidden;
+}
+
+.flip-card__leaf--front {
+    transform-origin: bottom;
+    transform: rotateX(0deg);
+}
+
+.flip-card__leaf--back {
+    transform-origin: top;
+    transform: rotateX(90deg);
+}
+
+.flip-card.is-flipping .flip-card__leaf--front {
+    animation: flip-down 0.35s ease-in forwards;
+}
+
+.flip-card.is-flipping .flip-card__leaf--back {
+    animation: flip-in 0.35s ease-out forwards;
+}
+
+@keyframes flip-down {
+    to { transform: rotateX(-90deg); }
+}
+
+@keyframes flip-in {
+    to { transform: rotateX(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flip-card.is-flipping .flip-card__leaf--front,
+    .flip-card.is-flipping .flip-card__leaf--back {
+        animation: none !important;
+    }
+}
+
+/* =============== Responsivo: Rail de Íconos (pantallas <= 600px, foldables) =============== */
+@media (max-width: 600px) {
+    nav {
+        width: 72px;
+        min-width: 72px;
+        padding: 16px 8px;
+    }
+
+    #app-name,
+    #stadistics,
+    #clock {
+        display: none;
+    }
+
+    #options {
+        flex: 1;
+        justify-content: center;
+        border: none;
+        padding: 0;
+    }
+
+    #options a {
+        justify-content: center;
+        padding-left: 0;
+    }
+
+    #options a span {
+        display: none;
+    }
 }
 
 /* =============== Contenedor Principal =============== */
 #main-section {
-    width: 80%;
-    min-height: 95dvh;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 95dvh;
+    display: flex;
+    flex-direction: column;
     padding: 32px;
+}
+
+.main-content {
+    flex: 1;
+    min-height: 0; /* sin esto un hijo flex no se encoge bajo el alto de su contenido y el scroll no aparece */
+    overflow-y: auto;
+}
+
+.main-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+}
+
+.main-content {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }

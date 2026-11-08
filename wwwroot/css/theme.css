@@ -1,0 +1,114 @@
+:root {
+    /* Fondo global */
+    --bg-start: #191d1e;
+    --bg-end: #283139;
+
+    /* Texto */
+    --text: #e8eaed;
+    --text-muted: #a0aab2;
+    --text-faint: rgba(255, 255, 255, 0.6);
+    --label-muted: #8b929a;
+
+    /* Vidrio — paneles grandes (nav, main-section, login card) */
+    --glass-fill: rgba(25, 29, 31, 0.35);
+    --glass-fill-strong: rgba(30, 32, 36, 0.45);
+    --glass-highlight: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-border-strong: rgba(255, 255, 255, 0.18);
+    --glass-shadow-inset: rgba(255, 255, 255, 0.15);
+    --shadow: rgba(0, 0, 0, 0.35);
+    --shadow-strong: rgba(0, 0, 0, 0.4);
+
+    /* Vidrio — "chips" anidados (options, stadistics, clock, settings-link) */
+    --chip-fill: rgba(255, 255, 255, 0.04);
+    --chip-border: rgba(255, 255, 255, 0.10);
+    --chip-fill-hover: rgba(255, 255, 255, 0.14);
+    --chip-border-hover: rgba(255, 255, 255, 0.30);
+    --chip-shadow-inset: rgba(255, 255, 255, 0.08);
+
+    /* Estado activo del nav */
+    --active-fill: #1b1e22;
+    --active-border: rgba(255, 255, 255, 0.16);
+    --active-shadow: rgba(0, 0, 0, 0.5);
+
+    /* Tooltips */
+    --tooltip-bg: rgba(20, 22, 25, 0.92);
+    --tooltip-border: rgba(255, 255, 255, 0.12);
+
+    /* Inputs (Login) */
+    --input-bg: rgba(0, 0, 0, 0.2);
+    --input-bg-focus: rgba(0, 0, 0, 0.3);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --input-autofill-bg: #1c1e22;
+
+    /* Acento de marca (ámbar) */
+    --accent: #ffc107;
+    --accent-soft: rgba(255, 193, 7, 0.25);
+    --accent-soft-2: rgba(255, 193, 7, 0.3);
+    --accent-soft-3: rgba(255, 193, 7, 0.5);
+    --accent-strong: rgba(255, 193, 7, 0.9);
+    --accent-text-on: #1a1a1a;
+
+    /* Partículas / blobs */
+    --orb-1: rgba(255, 193, 7, 0.25);
+    --orb-2: rgba(253, 126, 20, 0.2);
+    --orb-3: rgba(255, 224, 102, 0.15);
+    --orb-4: rgba(243, 126, 30, 0.2);
+    --faint-35: rgba(255, 255, 255, 0.35);
+
+    /* Fondo propio del Login + scrollbar (separados de otros tokens reutilizados) */
+    --login-bg: #0f1115;
+    --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+}
+
+/* =============== Tema Claro =============== */
+:root[data-theme="light"] {
+    --bg-start: #f7f5f0;
+    --bg-end: #e9e3d6;
+    --login-bg: #f3efe6;
+
+    --text: #1f2328;
+    --text-muted: #5b6168;
+    --text-faint: rgba(31, 35, 40, 0.55);
+    --label-muted: #6b7178;
+
+    --glass-fill: rgba(255, 255, 255, 0.25);
+    --glass-fill-strong: rgba(255, 255, 255, 0.55);
+    --glass-highlight: rgba(255, 255, 255, 0.35);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-border-strong: rgba(0, 0, 0, 0.16);
+    --glass-shadow-inset: rgba(255, 255, 255, 0.7);
+    --shadow: rgba(0, 0, 0, 0.12);
+    --shadow-strong: rgba(0, 0, 0, 0.18);
+    --scrollbar-thumb: rgba(0, 0, 0, 0.18);
+
+    --chip-fill: rgba(0, 0, 0, 0.03);
+    --chip-border: rgba(0, 0, 0, 0.10);
+    --chip-fill-hover: rgba(0, 0, 0, 0.07);
+    --chip-border-hover: rgba(0, 0, 0, 0.20);
+    --chip-shadow-inset: rgba(255, 255, 255, 0.6);
+
+    --active-fill: #eef0f2;
+    --active-border: rgba(0, 0, 0, 0.14);
+    --active-shadow: rgba(0, 0, 0, 0.25);
+
+    --tooltip-bg: rgba(255, 255, 255, 0.95);
+    --tooltip-border: rgba(0, 0, 0, 0.12);
+
+    --input-bg: rgba(0, 0, 0, 0.04);
+    --input-bg-focus: rgba(0, 0, 0, 0.06);
+    --input-border: rgba(0, 0, 0, 0.12);
+    --input-autofill-bg: #f0ede4;
+
+    --accent: #e8a200;
+    --accent-soft: rgba(232, 162, 0, 0.18);
+    --accent-soft-2: rgba(232, 162, 0, 0.22);
+    --accent-soft-3: rgba(232, 162, 0, 0.35);
+    --accent-strong: rgba(232, 162, 0, 0.92);
+
+    --orb-1: rgba(255, 193, 7, 0.15);
+    --orb-2: rgba(253, 126, 20, 0.12);
+    --orb-3: rgba(255, 224, 102, 0.10);
+    --orb-4: rgba(243, 126, 30, 0.12);
+    --faint-35: rgba(0, 0, 0, 0.30);
+}

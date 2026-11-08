@@ -14,8 +14,8 @@ body {
     padding: 0px;
     margin: 0px;
     overflow: hidden;
-    background: #191d1e;
-    background: linear-gradient(0deg, #191d1e 50%, #283139 100%);
+    background: var(--bg-start);
+    background: linear-gradient(0deg, var(--bg-start) 50%, var(--bg-end) 100%);
 }
 
 /* =============== Animación de Fondo (Canvas de partículas) =============== */
@@ -46,17 +46,17 @@ main {
 .glass-panel {
     position: relative;
     box-sizing: border-box;
-    color: #e8eaed;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 60%),
-                rgba(25, 29, 31, 0.35);
+    color: var(--text);
+    background: linear-gradient(135deg, var(--glass-highlight), rgba(255, 255, 255, 0) 60%),
+                var(--glass-fill);
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top-color: rgba(255, 255, 255, 0.18);
-    border-left-color: rgba(255, 255, 255, 0.18);
+    border: 1px solid var(--glass-border);
+    border-top-color: var(--glass-border-strong);
+    border-left-color: var(--glass-border-strong);
     box-shadow:
-        inset 0 1px 1px rgba(255, 255, 255, 0.15),
-        0 8px 32px rgba(0, 0, 0, 0.35);
+        inset 0 1px 1px var(--glass-shadow-inset),
+        0 8px 32px var(--shadow);
     border-radius: 18px;
     overflow: hidden;
 }
@@ -86,7 +86,7 @@ nav {
     font-family: 'Rozha', sans-serif;
     font-size: xx-large;
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-faint);
 }
 
 #options {
@@ -100,16 +100,16 @@ nav {
 }
 
 #options a {
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--chip-border);
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--chip-fill);
     transition: background-color 0.25s ease,
                 border-color 0.25s ease,
                 backdrop-filter 0.25s ease;
     font-size: large;
     gap: 10px;
     text-decoration: none;
-    color: aliceblue;
+    color: var(--text);
     padding-left: 20px;
     height: 7dvh;
     display: flex;
@@ -118,26 +118,26 @@ nav {
 
 #options a:hover,
 #options a:focus-visible {
-    background-color: rgba(255, 255, 255, 0.14);
-    border-color: rgba(255, 255, 255, 0.30);
+    background-color: var(--chip-fill-hover);
+    border-color: var(--chip-border-hover);
     backdrop-filter: blur(10px) saturate(180%);
     -webkit-backdrop-filter: blur(10px) saturate(180%);
 }
 
 #options a.active {
-    background-color : #1b1e22;
+    background-color : var(--active-fill);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.5);
+    border-color: var(--active-border);
+    box-shadow: inset 0 1px 4px var(--active-shadow);
 }
 
 #stadistics,
 #clock {
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--chip-border);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    background: var(--chip-fill);
+    box-shadow: inset 0 1px 1px var(--chip-shadow-inset);
 }
 
 #stadistics {
@@ -177,7 +177,7 @@ nav {
 }
 
 .flip-sep {
-    color: rgba(255, 255, 255, 0.35);
+    color: var(--faint-35);
     font-size: 0.85rem;
     line-height: 32px;
     padding: 0 1px;
@@ -205,7 +205,7 @@ nav {
     width: 100%;
     height: 16px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--glass-highlight);
 }
 
 .flip-card__half span,
@@ -217,7 +217,7 @@ nav {
     text-align: center;
     font: 600 0.95rem/32px system-ui, -apple-system, sans-serif;
     font-variant-numeric: tabular-nums;
-    color: #e8eaed;
+    color: var(--text);
 }
 
 .flip-unit--meridiem .flip-card__half span,
@@ -230,7 +230,7 @@ nav {
 .flip-card__leaf--front {
     top: 0;
     border-radius: 4px 4px 0 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid var(--shadow);
 }
 
 .flip-card__half--top span,
@@ -347,11 +347,11 @@ nav {
 }
 
 .main-content::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--scrollbar-thumb);
     border-radius: 3px;
 }
 
 .main-content {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
 }

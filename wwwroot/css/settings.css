@@ -19,19 +19,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: aliceblue;
+    color: var(--text);
     text-decoration: none;
+    font: inherit;
+    cursor: pointer;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    background: rgba(255, 255, 255, 0.04);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--chip-border);
+    background: var(--chip-fill);
+    box-shadow: inset 0 1px 1px var(--chip-shadow-inset);
     transition: background-color 0.25s ease, border-color 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.theme-toggle .bi-lightbulb-fill {
+    display: none;
+}
+
+html[data-theme="light"] .theme-toggle .bi-lightbulb {
+    display: none;
+}
+
+html[data-theme="light"] .theme-toggle .bi-lightbulb-fill {
+    display: inline;
 }
 
 .settings-link:hover,
 .settings-link:focus-visible {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.28);
+    background-color: var(--chip-fill-hover);
+    border-color: var(--chip-border-hover);
     backdrop-filter: blur(10px) saturate(180%);
     -webkit-backdrop-filter: blur(10px) saturate(180%);
 }
@@ -44,8 +58,8 @@
     white-space: nowrap;
     padding: 6px 12px;
     border-radius: 8px;
-    background: rgba(20, 22, 25, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: var(--tooltip-bg);
+    border: 1px solid var(--tooltip-border);
     font-size: 0.8rem;
     opacity: 0;
     pointer-events: none;
